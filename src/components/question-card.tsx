@@ -5,13 +5,14 @@ import { useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { QuizQuestion } from "@/lib/quiz";
+import type { QuizMode } from "@/types/quiz";
 
 type Props = {
   question: QuizQuestion;
   questionNumber: number;
   totalQuestions: number;
-  onAnswer: (isCorrect: boolean) => void;
-  onNext: () => void;
+  quizMode: QuizMode;
+  onNext: (wasCorrect: boolean) => void;
 };
 
 const answerLabels = ["A", "B", "Γ", "Δ"];
@@ -20,7 +21,7 @@ export function QuestionCard({
   question,
   questionNumber,
   totalQuestions,
-  onAnswer,
+  quizMode,
   onNext,
 }: Props) {
   const [selectedAnswerId, setSelectedAnswerId] = useState<string | null>(null);
@@ -31,6 +32,8 @@ export function QuestionCard({
 
   const hasAnswered = selectedAnswerId !== null;
   const isCorrect = selectedAnswer?.isCorrect ?? false;
+  const isPracticeMode = quizMode === "practice";
+  const isExamMode = quizMode === "exam";
 
   return (
     <Card className="rounded-2xl border bg-white shadow-sm">
@@ -64,7 +67,7 @@ export function QuestionCard({
           let buttonClassName =
             "h-auto min-h-14 w-full justify-start whitespace-normal rounded-xl px-4 py-3 text-left transition-colors duration-300";
 
-          if (hasAnswered) {
+          if (hasAnswered && isPracticeMode) {
             if (answer.isCorrect) {
               buttonClassName +=
                 " bg-green-500 text-white border-green-600 hover:bg-green-500";
@@ -82,8 +85,7 @@ export function QuestionCard({
               disabled={hasAnswered}
               onClick={() => {
                 setSelectedAnswerId(answer.id);
-                onAnswer(answer.isCorrect);
-              }}
+                }}
             >
               <span className="mr-3 font-semibold">
                 {answerLabels[index] ?? `${index + 1}`}
@@ -96,30 +98,51 @@ export function QuestionCard({
           );
         })}
 
-        {hasAnswered && (
-          <div className="rounded-xl border bg-slate-50 p-4">
-            <p className="font-medium">
-              {isCorrect ? "Σωστή απάντηση!" : "Λάθος απάντηση."}
-            </p>
+        {hasAnswered && isPracticeMode && (
+            <div className="rounded-xl border bg-slate-50 p-4">
+                <p className="font-medium">
+                {isCorrect ? "Σωστή απάντηση!" : "Λάθος απάντηση."}
+                </p>
 
-            {!isCorrect && selectedAnswer && (
-              <p className="mt-2 text-sm text-slate-600">
-                Επέλεξες: {selectedAnswer.text}
-              </p>
+                {!isCorrect && selectedAnswer && (
+                <p className="mt-2 text-sm text-slate-600">
+                    Επέλεξες: {selectedAnswer.text}
+                </p>
+                )}
+
+                <p className="mt-2 text-sm text-slate-600">
+                Σωστή απάντηση:{" "}
+                {question.answers.find((answer) => answer.isCorrect)?.text}
+                </p>
+
+                <Button
+                className="mt-4 w-full rounded-xl"
+                onClick={() => onNext(isCorrect)}
+                >
+                {questionNumber === totalQuestions
+                    ? "Ολοκλήρωση"
+                    : "Επόμενη ερώτηση"}
+                </Button>
+            </div>
             )}
 
-            <p className="mt-2 text-sm text-slate-600">
-              Σωστή απάντηση:{" "}
-              {question.answers.find((answer) => answer.isCorrect)?.text}
-            </p>
+            {hasAnswered && isExamMode && (
+            <div className="rounded-xl border bg-slate-50 p-4">
+                <p className="text-sm text-slate-600">
+                Η απάντησή σου καταχωρήθηκε.
+                </p>
 
-            <Button className="mt-4 w-full rounded-xl" onClick={onNext}>
-              {questionNumber === totalQuestions
-                ? "Ολοκλήρωση"
-                : "Επόμενη ερώτηση"}
-            </Button>
-          </div>
-        )}
+                <Button
+                className="mt-4 w-full rounded-xl"
+                onClick={() => onNext(isCorrect)}
+                >
+                {questionNumber === totalQuestions
+                    ? "Ολοκλήρωση εξέτασης"
+                    : "Επόμενη ερώτηση"}
+                </Button>
+            </div>
+            )}
+
       </CardContent>
     </Card>
   );

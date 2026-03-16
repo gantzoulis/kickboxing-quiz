@@ -22,4 +22,5 @@ export type LessonStats = {
 
 export type LessonStatsMap = Record<string, LessonStats>;
 
+export type QuizMode = "practice" | "exam";
 

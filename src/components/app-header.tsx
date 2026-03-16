@@ -64,7 +64,10 @@ export function AppHeader() {
           Προπονητική Β΄ Επιπέδου
         </p>
         <p className="mt-1 text-xs font-semibold text-cyan-400 text-slate-600">
-          Έκδοση 0.5
+          Έκδοση 0.81b
+        </p>
+        <p className="mt-1 text-xs font-extralight italic text-cyan-400 text-slate-600">
+          [G.A All rights reserved]
         </p>
       </div>
     </header>

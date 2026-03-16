@@ -12,9 +12,15 @@ import {
   getShuffledQuizQuestionsByLesson,
   type QuizQuestion,
 } from "@/lib/quiz";
-import type { LessonStats, LessonStatsMap } from "@/types/quiz";
+import type { LessonStats, LessonStatsMap, QuizMode } from "@/types/quiz";
+import { getLessonTitle } from "@/data/lessons"
 
-type Screen = "home" | "lesson-select" | "quiz" | "results";
+type Screen =
+  | "home"
+  | "lesson-select"
+  | "lesson-mode-select"
+  | "quiz"
+  | "results";
 
 function getEmptyLessonStats(): LessonStats {
   return {
@@ -34,6 +40,10 @@ export default function HomePage() {
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
   const [lastScore, setLastScore] = useState<number | null>(null);
   const [lessonStats, setLessonStats] = useState<LessonStatsMap>({});
+  const [lessonOrder, setLessonOrder] = useState<string[]>([]);
+  const [quizMode, setQuizMode] = useState<QuizMode>("practice");
+
+
 
 
   const currentQuestion = quizQuestions[currentIndex];
@@ -56,35 +66,45 @@ export default function HomePage() {
     setLastScore(score);
   }, [score]);
 
-  function startLessonQuiz(lessonId: string) {
-    const questions = getShuffledQuizQuestionsByLesson(lessonId);
 
-    setSelectedLessonId(lessonId);
-    window.localStorage.setItem("selectedLessonId", lessonId);
+      function startLessonQuiz(lessonId: string, mode: QuizMode) {
+      const questions = getShuffledQuizQuestionsByLesson(lessonId);
+      const finalQuestions =
+        mode === "exam" ? questions.slice(0, 10) : questions;
 
-    setQuizQuestions(questions);
-    setCurrentIndex(0);
-    setScore(0);
-    setScreen("quiz");
-  }
+      setSelectedLessonId(lessonId);
+      window.localStorage.setItem("selectedLessonId", lessonId);
 
-  function handleNextQuestion() {
+      setQuizMode(mode);
+      setQuizQuestions(finalQuestions);
+      setCurrentIndex(0);
+      setScore(0);
+      setScreen("quiz");
+    }
+
+
+  function handleNextQuestion(wasCorrect: boolean) {
+    const nextScore = wasCorrect ? score + 1 : score;
     const isLastQuestion = currentIndex === quizQuestions.length - 1;
 
     if (isLastQuestion) {
-      saveLessonResult(score);
+      setScore(nextScore);
+      saveLessonResult(nextScore);
       setScreen("results");
       return;
     }
 
+    setScore(nextScore);
     setCurrentIndex((prev) => prev + 1);
   }
 
 
+
   function handleRestart() {
     if (!selectedLessonId) return;
-    startLessonQuiz(selectedLessonId);
+    startLessonQuiz(selectedLessonId, quizMode);
   }
+
 
   function handleBackHome() {
     setScreen("home");
@@ -101,12 +121,17 @@ export default function HomePage() {
     }
 
     if (screen === "quiz") {
-      setScreen("lesson-select");
+      setScreen("lesson-mode-select");
       setQuizQuestions([]);
       setCurrentIndex(0);
       setScore(0);
       return;
     }
+   
+    if (screen === "lesson-mode-select") {
+     setScreen("lesson-select");
+      return;
+    } 
 
     if (screen === "results") {
       setScreen("lesson-select");
@@ -135,8 +160,9 @@ export default function HomePage() {
 
 
   return (
-    <main className="min-h-screen bg-slate-50 px-4 py-8">
-      <div className="mx-auto flex w-full max-w-md flex-col gap-6">
+  <main className="h-screen overflow-hidden bg-slate-50 px-4 py-4">
+    <div className="mx-auto flex h-full w-full max-w-md flex-col gap-4">
+      <div className="shrink-0 space-y-3">
         <AppHeader />
 
         {screen !== "home" && (
@@ -144,51 +170,87 @@ export default function HomePage() {
             ← Πίσω
           </Button>
         )}
+      </div>
 
-        {screen === "home" && (
-          <>
-            <ModeSelector onStart={() => setScreen("lesson-select")} />
+      <div className="min-h-0 flex-1 overflow-y-auto no-scrollbar">
 
-            {lastScore !== null && (
-              <div className="rounded-2xl border bg-white p-4 shadow-sm">
-                <p className="text-sm text-slate-500">Τελευταίο σκορ</p>
-                <p className="mt-1 text-xl font-bold">{lastScore}</p>
-              </div>
-            )}
-          </>
+        <div className="space-y-4 pb-2">
+          {screen === "home" && (
+            <>
+              <ModeSelector onStart={() => setScreen("lesson-select")} />
+
+              {/*lastScore !== null && (
+                <div className="rounded-2xl border bg-white p-4 shadow-sm">
+                  <p className="text-sm text-slate-500">Τελευταίο σκορ</p>
+                  <p className="mt-1 text-xl font-bold">{lastScore}</p>
+                </div>
+              )*/}
+            </>
+          )}
+
+         {screen === "lesson-select" && (
+          <LessonList
+            onSelectLesson={(lessonId) => {
+              setSelectedLessonId(lessonId);
+              setScreen("lesson-mode-select");
+            }}
+            lessonStats={lessonStats}
+          />
+        )}
+        {screen === "lesson-mode-select" && selectedLessonId && (
+          <div className="rounded-2xl border bg-white p-4 shadow-sm">
+            <p className="text-sm text-slate-500">Επιλεγμένο μάθημα</p>
+            <p className="mt-1 text-lg font-bold">{getLessonTitle(selectedLessonId)}</p>
+
+            <div className="mt-4 grid gap-3">
+              <Button
+                className="w-full rounded-xl"
+                onClick={() => {
+                  startLessonQuiz(selectedLessonId, "practice");
+                }}
+              >
+                Εξάσκηση
+              </Button>
+
+              <Button
+                variant="secondary"
+                className="w-full rounded-xl"
+                onClick={() => {
+                  startLessonQuiz(selectedLessonId, "exam");
+                }}
+              >
+                Εξέταση
+              </Button>
+
+            </div>
+          </div>
         )}
 
-          {screen === "lesson-select" && (
-            <LessonList
-              onSelectLesson={startLessonQuiz}
-              lessonStats={lessonStats}
+
+          {screen === "quiz" && currentQuestion && (
+            <QuestionCard
+              key={currentQuestion.id}
+              question={currentQuestion}
+              questionNumber={currentIndex + 1}
+              totalQuestions={quizQuestions.length}
+              quizMode={quizMode}
+              onNext={handleNextQuestion}
             />
           )}
 
-        {screen === "quiz" && currentQuestion && (
-          <QuestionCard
-            key={currentQuestion.id}
-            question={currentQuestion}
-            questionNumber={currentIndex + 1}
-            totalQuestions={quizQuestions.length}
-            onAnswer={(isCorrect) => {
-              if (isCorrect) {
-                setScore((prev) => prev + 1);
-              }
-            }}
-            onNext={handleNextQuestion}
-          />
-        )}
 
-        {screen === "results" && (
-          <ResultCard
-            score={score}
-            totalQuestions={quizQuestions.length}
-            onRestart={handleRestart}
-            onBackHome={handleBackHome}
-          />
-        )}
+          {screen === "results" && (
+            <ResultCard
+              score={score}
+              totalQuestions={quizQuestions.length}
+              onRestart={handleRestart}
+              onBackHome={handleBackHome}
+            />
+          )}
+        </div>
       </div>
-    </main>
-  );
+    </div>
+  </main>
+);
+
 }
