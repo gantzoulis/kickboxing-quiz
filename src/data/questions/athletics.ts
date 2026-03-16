@@ -157,7 +157,7 @@ export const athleticsQuestions: Question[] = [
     ],
     correctAnswer: 2,
   },
-  /*{
+  {
     id: "athletics-13",
     lessonId: "athletics",
     text: "Σχετικά με τον αιφνίδιο θάνατο στον αθλητισμό τι από τα παρακάτω ισχύει;",
@@ -260,5 +260,5 @@ export const athleticsQuestions: Question[] = [
       "Όλες οι απαντήσεις είναι σωστές",
     ],
     correctAnswer: 1,
-  },*/
+  },
 ];
