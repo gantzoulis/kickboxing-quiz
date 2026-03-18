@@ -139,7 +139,7 @@ answers: [
 "3",
 "Όσες θέλει με σωστή τεχνική"
 ],
-correctAnswer: 1
+correctAnswer: 0
 },
 
 {
@@ -153,7 +153,7 @@ answers: [
 "Σε όλα",
 "Σε κανένα"
 ],
-correctAnswer: 0
+correctAnswer: 3
 },
 
 {

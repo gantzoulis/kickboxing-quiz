@@ -55,7 +55,7 @@ answers: [
 "Με μπροστινό πόδι και στα δύο",
 "Με πίσω πόδι και στα δύο"
 ],
-correctAnswer: 1
+correctAnswer: 0
 },
 
 {
@@ -83,7 +83,7 @@ answers: [
 "6 στυλ",
 "7 στυλ"
 ],
-correctAnswer: 2
+correctAnswer: 3
 },
 
 {
@@ -167,7 +167,7 @@ answers: [
 "Πόδι",
 "Σώμα, κεφάλι και πόδι"
 ],
-correctAnswer: 0
+correctAnswer: 3
 },
 
 {
