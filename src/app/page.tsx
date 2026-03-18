@@ -22,6 +22,8 @@ type Screen =
   | "quiz"
   | "results";
 
+const LESSON_STATS_STORAGE_KEY = "kickboxing_quiz_lesson_stats";
+
 function getEmptyLessonStats(): LessonStats {
   return {
     attempts: 0,
@@ -30,6 +32,7 @@ function getEmptyLessonStats(): LessonStats {
     lastPlayedAt: null
   };
 }
+
 
 
 export default function HomePage() {
@@ -47,10 +50,12 @@ export default function HomePage() {
 
 
   const currentQuestion = quizQuestions[currentIndex];
+  
 
   useEffect(() => {
     const savedLessonId = window.localStorage.getItem("selectedLessonId");
     const savedScore = window.localStorage.getItem("lastScore");
+    const savedLessonStats = window.localStorage.getItem(LESSON_STATS_STORAGE_KEY);
 
     if (savedLessonId) {
       setSelectedLessonId(savedLessonId);
@@ -59,12 +64,29 @@ export default function HomePage() {
     if (savedScore) {
       setLastScore(Number(savedScore));
     }
+
+    if (savedLessonStats) {
+      try {
+        setLessonStats(JSON.parse(savedLessonStats));
+      } catch (error) {
+        console.error("Failed to parse lesson stats from localStorage", error);
+        setLessonStats({});
+      }
+    }
   }, []);
 
+    useEffect(() => {
+      window.localStorage.setItem("lastScore", String(score));
+      setLastScore(score);
+    }, [score]);
+
   useEffect(() => {
-    window.localStorage.setItem("lastScore", String(score));
-    setLastScore(score);
-  }, [score]);
+    window.localStorage.setItem(
+      LESSON_STATS_STORAGE_KEY,
+      JSON.stringify(lessonStats)
+    );
+  }, [lessonStats]);
+
 
 
       function startLessonQuiz(lessonId: string, mode: QuizMode) {
