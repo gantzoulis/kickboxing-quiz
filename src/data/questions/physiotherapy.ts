@@ -181,7 +181,7 @@ answers: [
 "Ποτέ δεν προκαλεί χόνδρινες βλάβες",
 "Προκαλεί πάντοτε χόνδρινες βλάβες"
 ],
-correctAnswer: 1
+correctAnswer: 1 //mporei na einai to 3
 },
 
 {

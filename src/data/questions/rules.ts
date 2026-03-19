@@ -106,7 +106,7 @@ lessonId: "rules",
 lessonTitle: "Κανονισμοί",
 text: "Το προστατευτικό σπασουάρ είναι υποχρεωτικό σε ποια στυλ;",
 answers: [
-"Σε όλα",
+"Σε όλα τα στυλ",
 "Low kick",
 "Full contact",
 "K1"
