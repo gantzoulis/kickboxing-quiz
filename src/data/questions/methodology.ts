@@ -97,7 +97,7 @@ answers: [
 "Εκρηκτική δύναμη",
 "Ισομετρική δύναμη"
 ],
-correctAnswer: 1 //was 2 changed to 1
+correctAnswer: 2 //was 2 changed to 1
 },
 
 {
