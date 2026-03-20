@@ -251,7 +251,7 @@ answers: [
 "Βλαπτικό για λεπτές μυϊκές κινήσεις",
 "Όλες οι απαντήσεις είναι σωστές"
 ],
-correctAnswer: 3
+correctAnswer: 2 //was 3 changed to 2
 },
 
 {

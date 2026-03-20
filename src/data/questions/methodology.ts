@@ -27,7 +27,7 @@ answers: [
 "Υψηλών επιδόσεων, αγωνιστικής, μαζικής",
 "Θεραπευτικής, σχολικής, αναψυχής"
 ],
-correctAnswer: 1
+correctAnswer: 2 //was 1 changes to 2
 },
 
 {
@@ -41,7 +41,7 @@ answers: [
 "4 μορφές αθλητισμού",
 "5 μορφές αθλητισμού"
 ],
-correctAnswer: 3
+correctAnswer: 1 //was 3 changed to 1
 },
 
 {
@@ -97,7 +97,7 @@ answers: [
 "Εκρηκτική δύναμη",
 "Ισομετρική δύναμη"
 ],
-correctAnswer: 2
+correctAnswer: 1 //was 2 changed to 1
 },
 
 {

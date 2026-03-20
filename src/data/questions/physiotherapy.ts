@@ -41,7 +41,7 @@ answers: [
 "Τίποτα από τα παραπάνω",
 "Είναι ταυτόσημες έννοιες"
 ],
-correctAnswer: 0
+correctAnswer: 2 //was 0 changed to 2
 },
 
 {
@@ -69,7 +69,7 @@ answers: [
 "Δεν είναι αιτία τραυματισμών",
 "Καμία απάντηση δεν είναι σωστή"
 ],
-correctAnswer: 1
+correctAnswer: 3 //changed to 3 was 1
 },
 
 {
@@ -181,7 +181,7 @@ answers: [
 "Ποτέ δεν προκαλεί χόνδρινες βλάβες",
 "Προκαλεί πάντοτε χόνδρινες βλάβες"
 ],
-correctAnswer: 1 //mporei na einai to 3
+correctAnswer: 3 //mporei na einai to 3
 },
 
 {
@@ -223,7 +223,7 @@ answers: [
 "Σπάνια είναι απαραίτητες",
 "Είναι πάντοτε απαραίτητες"
 ],
-correctAnswer: 1
+correctAnswer: 3
 },
 
 {

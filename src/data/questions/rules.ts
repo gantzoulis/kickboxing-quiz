@@ -13,7 +13,7 @@ answers: [
 "OC (13-15) – J (16-18) – S (19-40)",
 "OC (13-15) – J (16-18) – S (19-40) – V (41-55)"
 ],
-correctAnswer: 1
+correctAnswer: 3 //was 1 changes to 3
 },
 
 {
@@ -153,7 +153,7 @@ answers: [
 "Σε όλα",
 "Σε κανένα"
 ],
-correctAnswer: 3
+correctAnswer: 1 //was 3changed to 1
 },
 
 {

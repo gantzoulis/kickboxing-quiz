@@ -259,6 +259,6 @@ export const trainingTheoryQuestions: Question[] = [
       "Οδηγούν στην ίδια βελτίωση της απόδοσης όλων των αθλητών",
       "Κανένα από τα υπόλοιπα",
     ],
-    correctAnswer: 3,
+    correctAnswer: 0, //was 3 changed to 0
   },
 ];

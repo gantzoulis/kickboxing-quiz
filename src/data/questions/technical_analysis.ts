@@ -125,7 +125,7 @@ answers: [
 "J – S",
 "YJ – OJ – S"
 ],
-correctAnswer: 1
+correctAnswer: 3 //was 1 changed to 3
 },
 
 {
@@ -139,7 +139,7 @@ answers: [
 "Μπροστά, πλαϊνά και πίσω",
 "Μπροστά, πλαϊνά, πίσω και πάνω"
 ],
-correctAnswer: 1
+correctAnswer: 2
 },
 
 {
@@ -153,7 +153,7 @@ answers: [
 "Κουντεπιέ",
 "Εσωτερικό πατούσας"
 ],
-correctAnswer: 0
+correctAnswer: 1
 },
 
 {
